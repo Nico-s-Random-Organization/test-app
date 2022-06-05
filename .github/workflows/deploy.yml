@@ -1,0 +1,31 @@
+name: Deploy
+
+on: 
+    - push
+
+branches:
+    - master
+
+jobs:
+    Build:
+        name: Build App
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+            uses: actions/checkout@v3
+            with:
+                ref: master
+            - name: Setup Node V16
+            uses: actions/setup-node@v3
+            with:
+                node-version: 16
+            - name: Install Yarn
+              run: npm i -g yarn
+            - name: Yarn install
+              run: yarn install
+            - name: Yarn build
+              run: yarn build
+              env:
+                REACT_APP_NAME: test ave
+            - name: Deploy to GH Pages
+              run: yarn deploy
